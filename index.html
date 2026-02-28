@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generador de CV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- FORMULARIO -->
+
+  <aside class="form-panel">
+    <div class="form-header">
+      <span class="badge">CV Builder</span>
+      <h1>Tu Currículum<br><em>en segundos</em></h1>
+    </div>
+
+    <div class="form-sections">
+
+      <section class="form-section">
+        <h2 class="section-title"><span class="num">01</span> Datos Personales</h2>
+        <div class="field">
+          <label>Nombre completo</label>
+          <input type="text" id="fullName" placeholder="Ej. María García López">
+        </div>
+        <div class="field">
+          <label>Cargo / Título profesional</label>
+          <input type="text" id="jobTitle" placeholder="Ej. Diseñadora UX Senior">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="email" placeholder="maria@email.com">
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="tel" id="phone" placeholder="+502 5555-0000">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Ciudad</label>
+            <input type="text" id="city" placeholder="Ciudad de Guatemala">
+          </div>
+          <div class="field">
+            <label>LinkedIn / Portafolio</label>
+            <input type="text" id="linkedin" placeholder="linkedin.com/in/maria">
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h2 class="section-title"><span class="num">02</span> Perfil Profesional</h2>
+        <div class="field">
+          <label>Resumen</label>
+          <textarea id="summary" rows="4" placeholder="Breve descripción de tu perfil, logros y objetivos profesionales..."></textarea>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h2 class="section-title"><span class="num">03</span> Experiencia Laboral</h2>
+        <div id="experienceList"></div>
+        <button class="add-btn" onclick="addExperience()">+ Agregar experiencia</button>
+      </section>
+
+      <section class="form-section">
+        <h2 class="section-title"><span class="num">04</span> Educación</h2>
+        <div id="educationList"></div>
+        <button class="add-btn" onclick="addEducation()">+ Agregar educación</button>
+      </section>
+
+      <section class="form-section">
+        <h2 class="section-title"><span class="num">05</span> Habilidades</h2>
+        <div class="field">
+          <label>Habilidades técnicas (separadas por coma)</label>
+          <input type="text" id="skills" placeholder="Figma, Adobe XD, HTML/CSS, React...">
+        </div>
+        <div class="field">
+          <label>Idiomas (separados por coma)</label>
+          <input type="text" id="languages" placeholder="Español nativo, Inglés B2...">
+        </div>
+      </section>
+
+      <section class="form-section accent-section">
+        <h2 class="section-title"><span class="num">06</span> Estilo del CV</h2>
+        <div class="field-row">
+          <div class="field">
+            <label>Color principal</label>
+            <input type="color" id="accentColor" value="#C84B31">
+          </div>
+          <div class="field">
+            <label>Fuente</label>
+            <select id="fontChoice">
+              <option value="helvetica">Helvetica</option>
+              <option value="times">Times New Roman</option>
+              <option value="courier">Courier</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+    </div>
+    
+    <button class="download-btn" onclick="generatePDF()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Descargar PDF
+    </button>
+  </aside>
+
+  <!-- PREVIEW -->
+
+  <main class="preview-panel">
+    <div class="preview-label">Vista previa en tiempo real</div>
+    <div class="cv-preview" id="cvPreview">
+      <div class="cv-header-block" id="prevHeader">
+        <div class="cv-name" id="prevName">Tu Nombre Aquí</div>
+        <div class="cv-job" id="prevJob">Tu cargo profesional</div>
+        <div class="cv-contacts" id="prevContacts">
+          <span id="prevEmail">email@ejemplo.com</span>
+          <span id="prevPhone">+502 0000-0000</span>
+          <span id="prevCity">Ciudad</span>
+          <span id="prevLinkedin">linkedin.com/in/tu-perfil</span>
+        </div>
+      </div>
+
+      <div class="cv-body">
+        <div class="cv-left">
+          <div class="cv-section" id="prevSummarySection">
+            <div class="cv-section-title">Perfil</div>
+            <p class="cv-text" id="prevSummary">Tu resumen profesional aparecerá aquí...</p>
+          </div>
+          <div class="cv-section" id="prevExpSection">
+            <div class="cv-section-title">Experiencia</div>
+            <div id="prevExpList"></div>
+          </div>
+        </div>
+        <div class="cv-right">
+          <div class="cv-section" id="prevEduSection">
+            <div class="cv-section-title">Educación</div>
+            <div id="prevEduList"></div>
+          </div>
+          <div class="cv-section" id="prevSkillsSection">
+            <div class="cv-section-title">Habilidades</div>
+            <div class="cv-tags" id="prevSkills"></div>
+          </div>
+          <div class="cv-section" id="prevLangSection">
+            <div class="cv-section-title">Idiomas</div>
+            <div class="cv-tags" id="prevLanguages"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Templates ocultos -->
+<template id="expTemplate">
+  <div class="entry-block" data-type="exp">
+    <button class="remove-btn" onclick="removeEntry(this)">✕</button>
+    <div class="field-row">
+      <div class="field"><label>Empresa</label><input type="text" class="exp-company" placeholder="Empresa S.A."></div>
+      <div class="field"><label>Cargo</label><input type="text" class="exp-position" placeholder="Desarrollador Web"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Inicio</label><input type="text" class="exp-start" placeholder="Ene 2021"></div>
+      <div class="field"><label>Fin</label><input type="text" class="exp-end" placeholder="Actual"></div>
+    </div>
+    <div class="field"><label>Descripción</label><textarea class="exp-desc" rows="2" placeholder="Responsabilidades y logros clave..."></textarea></div>
+  </div>
+</template>
+
+<template id="eduTemplate">
+  <div class="entry-block" data-type="edu">
+    <button class="remove-btn" onclick="removeEntry(this)">✕</button>
+    <div class="field-row">
+      <div class="field"><label>Institución</label><input type="text" class="edu-school" placeholder="Universidad de Guatemala"></div>
+      <div class="field"><label>Título</label><input type="text" class="edu-degree" placeholder="Ingeniería en Sistemas"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Inicio</label><input type="text" class="edu-start" placeholder="2017"></div>
+      <div class="field"><label>Fin</label><input type="text" class="edu-end" placeholder="2022"></div>
+    </div>
+  </div>
+</template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="function.js"></script>
+</body>
+</html>
