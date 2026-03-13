@@ -182,20 +182,27 @@ function removeEntry(btn) {
   updateAllPreviews();
 }
 
-// ============================================================
 // GENERACIÓN DE PDF con jsPDF
-// ============================================================
+
+
 function generatePDF() {
+  //Libreria jsPDF y desestructuramos 
   const { jsPDF } = window.jspdf;
+  //Creamos un nuevo documento y ponemos la unidad en milimetros y tamaño de hoja a4
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
+  //Estas dos funciones devuelven un color en Hexagecimal
   const accentHex = document.getElementById('accentColor').value;
   const font      = document.getElementById('fontChoice').value;
+  //Convertimos a decimal con ".slice" cortamos la string en 3 cadenas de 2 caracteres
+  //de base 16 a numero decimal
   const R = parseInt(accentHex.slice(1,3),16);
   const G = parseInt(accentHex.slice(3,5),16);
   const B = parseInt(accentHex.slice(5,7),16);
 
-  // --- Datos ---
+  //buscamos el id de cada input y leemos su valor con .value
+  //con "||'sin nombre" lo usamos como un retorno si el campo esta vacio 
+  //enves de dejarlo en blanco lo retorna como 'sin nombre'
   const name     = document.getElementById('fullName').value  || 'Sin nombre';
   const job      = document.getElementById('jobTitle').value  || '';
   const email    = document.getElementById('email').value     || '';
@@ -203,12 +210,16 @@ function generatePDF() {
   const city     = document.getElementById('city').value      || '';
   const linkedin = document.getElementById('linkedin').value  || '';
   const summary  = document.getElementById('summary').value   || '';
+  //Con .split(',') separamos elementos por ','
+  //con .map(s => s.trim()) eliminamos espacios si el usuario los deja
+  //Con .filter(Boolean) eliminamos caracteres espacios o comas de más
   const skills   = document.getElementById('skills').value.split(',').map(s=>s.trim()).filter(Boolean);
   const langs    = document.getElementById('languages').value.split(',').map(s=>s.trim()).filter(Boolean);
 
-  const W = 210;
-  const H = 297;
-  let y = 0;
+  //Definimos medidas de documento
+  const W = 210; //Ancho de a4 en mm
+  const H = 297; //Alto de a4 en mm
+  let y = 0;     //Va dibujando desde 0 va aumentando 
 
   // ============ HEADER ============
   doc.setFillColor(R, G, B);
@@ -403,7 +414,7 @@ function generatePDF() {
   doc.setFont(font, 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(255,255,255);
-  const footerText = `${name} · CV generado automáticamente`;
+  const footerText = `${name} · CV generado en pagina desarrollada por mi persona`;
   doc.text(footerText, W/2 - doc.getTextWidth(footerText)/2, H - 4);
 
   // ============ GUARDAR ============
