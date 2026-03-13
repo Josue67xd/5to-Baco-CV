@@ -414,7 +414,7 @@ function generatePDF() {
   doc.setFont(font, 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(255,255,255);
-  const footerText = `${name} · CV generado en pagina desarrollada por mi persona`;
+  const footerText = `${name} · CV generado en pagina desarrollada por Josue Pérez - 2026`;
   doc.text(footerText, W/2 - doc.getTextWidth(footerText)/2, H - 4);
 
   // ============ GUARDAR ============
